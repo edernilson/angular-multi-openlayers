@@ -6,7 +6,7 @@
 }
 .ol-popup {
   position: absolute;
-  background-color: white;
+  background-color: #485563;
   -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
   filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
   padding: 15px;
@@ -26,7 +26,7 @@
   pointer-events: none;
 }
 .ol-popup:after {
-  border-top-color: white;
+  border-top-color: #485563;
   border-width: 10px;
   left: 48px;
   margin-left: -10px;
