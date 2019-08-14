@@ -1,4 +1,4 @@
-import {Component, ElementRef, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, AfterViewInit, ViewChild, Input} from '@angular/core';
 
 import Map from 'ol/Map.js';
 import Overlay from 'ol/Overlay.js';
@@ -6,7 +6,8 @@ import View from 'ol/View.js';
 import {toStringHDMS} from 'ol/coordinate.js';
 import TileLayer from 'ol/layer/Tile.js';
 import {toLonLat} from 'ol/proj.js';
-import OlXYZ from 'ol/source/xyz';
+import OSM from 'ol/source/OSM';
+
 
 @Component({
   selector: 'app-map',
@@ -19,6 +20,8 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('popup', { static: false }) popup: ElementRef;
   @ViewChild('popupContent', { static: false }) popupContent: ElementRef;
   @ViewChild('popupCloser', { static: false }) popupCloser: ElementRef;
+
+  @Input() zoom: number;
 
   map: Map;
 
@@ -44,9 +47,7 @@ export class MapComponent implements AfterViewInit {
     this.map = new Map({
       layers: [
         new TileLayer({
-          source: new OlXYZ({
-            url: 'http://tile.osm.org/{z}/{x}/{y}.png'
-          })
+          source: new OSM()
         })
       ],
       target: this.mapa.nativeElement,
