@@ -7,7 +7,7 @@ import {toStringHDMS} from 'ol/coordinate.js';
 import TileLayer from 'ol/layer/Tile.js';
 import {toLonLat} from 'ol/proj.js';
 import OSM from 'ol/source/OSM';
-
+import {transform} from 'ol/proj';
 
 @Component({
   selector: 'app-map',
@@ -21,7 +21,7 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('popupContent', { static: false }) popupContent: ElementRef;
   @ViewChild('popupCloser', { static: false }) popupCloser: ElementRef;
 
-  @Input() zoom: number;
+  @Input() zoom: number = 2;
 
   map: Map;
 
@@ -52,8 +52,8 @@ export class MapComponent implements AfterViewInit {
       ],
       target: this.mapa.nativeElement,
       view: new View({
-        center: [0, 0],
-        zoom: 2
+        center: transform([-38.5599713, -3.7345571],'EPSG:4326', 'EPSG:3857'),
+        zoom: this.zoom
       })
     });
 
