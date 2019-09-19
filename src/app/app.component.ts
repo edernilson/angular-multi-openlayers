@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ol-multi';
+
+  pontos: any = [
+    {
+      x: -38.5599713,
+      y: -3.7345571
+    }
+  ];
+
+
 }
