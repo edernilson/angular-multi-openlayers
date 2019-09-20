@@ -20,7 +20,7 @@ import { transform } from 'ol/proj';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, AfterViewInit {
   @ViewChild('mapa', { static: true }) mapaDiv: ElementRef;
   @ViewChild('popup', { static: true }) popup: ElementRef;
   @ViewChild('popupContent', { static: true }) popupContent: ElementRef;
@@ -28,10 +28,7 @@ export class MapComponent implements OnInit {
 
   @Input() zoom = 2;
 
-  instance: Map;
-  getInstance() {
-    return this.instance;
-  }
+  public mapaObj: Map;
 
   ngOnInit(): void {
     const container = this.popup.nativeElement;
@@ -52,7 +49,7 @@ export class MapComponent implements OnInit {
       return false;
     };
 
-    this.instance = new Map({
+    this.mapaObj = new Map({
       target: this.mapaDiv.nativeElement,
       view: new View({
         center: transform([-38.5599713, -3.7345571], 'EPSG:4326', 'EPSG:3857'),
@@ -60,14 +57,20 @@ export class MapComponent implements OnInit {
       })
     });
 
-    this.instance.addOverlay(overlay);
+    this.mapaObj.addOverlay(overlay);
 
-    this.instance.on('singleclick', evt => {
+    this.mapaObj.on('singleclick', evt => {
       const coordinate = evt.coordinate;
       const hdms = toStringHDMS(toLonLat(coordinate));
       const element = overlay.getElement();
       element.innerHTML = '<p>You clicked here:</p><code>' + hdms + '</code>';
       overlay.setPosition(coordinate);
     });
+  }
+
+   ngAfterViewInit() {
+
+    this.mapaObj.updateSize();
+
   }
 }
