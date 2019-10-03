@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { OsmComponent } from './map/osm/osm.component';
 import { RotaLayerComponent } from './map/rota-layer/rota-layer.component';
+import { FullscreenComponent } from './map/controls/fullscreen/fullscreen.component';
+import { TimelineComponent } from './timeline/timeline.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     OsmComponent,
-    RotaLayerComponent
+    RotaLayerComponent,
+    FullscreenComponent,
+    TimelineComponent
   ],
   imports: [
     BrowserModule,

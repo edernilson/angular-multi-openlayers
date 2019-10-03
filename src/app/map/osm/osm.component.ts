@@ -18,7 +18,7 @@ export class OsmComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.mapaSource.instance.addLayer(this.osmTile);
+    this.mapaSource.mapaObj.addLayer(this.osmTile);
   }
 
   ngAfterViewInit(): void {

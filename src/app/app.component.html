@@ -1,17 +1,26 @@
 <div>
   <h1>Angular with multi openlayers components</h1>
   <hr>
+<!--  
   <div class="row">
     <div class="col-md-6">
       <app-map zoom="14">
         <app-osm></app-osm>
         <app-rota-layer idRota="RT001001" [pontos]="pontos"></app-rota-layer>
+        <app-fullscreen className="mapa-fullscreen"></app-fullscreen>
       </app-map>
     </div>
     <div class="col-md-6">
       <app-map zoom="10">
         <app-osm></app-osm>
       </app-map>
+    </div>
+  </div>
+-->
+
+  <div class="row">
+    <div class="col-md-6">
+      <app-timeline [visitas]="visitas"></app-timeline>
     </div>
   </div>
 </div>
