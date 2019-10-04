@@ -10,6 +10,10 @@ import * as moment from 'moment';
 })
 export class TimelineComponent implements OnInit, AfterContentInit {
   @Input() visitas: any[];
+  @Input() visitaColor: string = 'green';
+  @Input() visitaAtendidaColor: string = 'orange';
+
+  raio = 8.5; 
 
   constructor(private host: ElementRef) { }
 
@@ -17,9 +21,9 @@ export class TimelineComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    const _hostElement = this.host.nativeElement.firstChild;
+    const hostElement = this.host.nativeElement.firstChild;
 
-    const styles = getComputedStyle(_hostElement);
+    const styles = getComputedStyle(hostElement);
 
     const width = parseInt(styles.width, 10);
 
@@ -27,11 +31,17 @@ export class TimelineComponent implements OnInit, AfterContentInit {
 
     console.log(_visitas);
 
-    this.visitas.forEach(visita => {
+    _visitas.forEach(visita => {
       visita.horaFormatada = this.converteHora(visita.hora);
     });
 
-    const scale = d3
+    const tooltip = d3
+      .select(hostElement)
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+    const scala = d3
       .scaleLinear()
       .domain(d3.extent(_visitas, d => d.hora))
       .nice()
@@ -39,14 +49,14 @@ export class TimelineComponent implements OnInit, AfterContentInit {
 
 
     const svg = d3
-      .select(_hostElement)
+      .select(hostElement)
       .append('svg')
       .attr('width', width)
       .attr('height', 65);
 
     const xAxis = d3
       .axisBottom()
-      .scale(scale)
+      .scale(scala)
       .tickValues([6.0, 10.0, 14.0, 18.0, 22.0])
       .tickFormat((d, i) => {
         return this.converteHora(d);
@@ -54,7 +64,51 @@ export class TimelineComponent implements OnInit, AfterContentInit {
 
    // Append group and insert axis
     svg.append('g')
-        .call(xAxis);
+      .call(xAxis)
+      .attr('transform', 'translate(00, 30)')
+
+    const gg = svg
+      .append('g');
+
+    const g = gg
+      .selectAll('g')
+      .data(_visitas)
+      .enter()
+      .append('g')
+      .attr('transform', (d) => {
+        return `translate(${scala(d.hora)}, 30)`;
+      });
+
+    g.append('circle')
+      .attr('opacity', 0.8)
+      .attr('r', this.raio)
+      .attr('fill', (d) => {
+        if (d.tipo === 'visita') {
+          if (d.status && d.status === 'atendida') {
+            return this.visitaAtendidaColor;
+          }
+          return this.visitaColor;
+        }
+        return 'transparent';
+      })
+      .on('mouseover', (d) => {
+        if (d.tipo === 'visita') {
+          tooltip
+            .transition()
+            .duration(200)
+            .style('opacity', .9);
+          tooltip.html(d.horaFormatada)
+            .style('top', '0')
+            .style('left', (scala(d.hora) - 10) + 'px');
+        }
+      })
+      .on('mouseout', () => {
+        tooltip
+          .transition()
+          .duration(500)
+          .style('opacity', 0);
+      })
+
   }
   converteHora = (value: number): string => {
     return moment(value, 'HH').format('HH:mm');

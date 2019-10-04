@@ -23,7 +23,7 @@ export class AppComponent {
     { hora: 22.0, tipo: 'marcador', },
     { hora: 8.35, tipo: 'visita', },
     { hora: 9.30, tipo: 'visita', },
-    { hora: 11.14, tipo: 'visita', },
+    { hora: 11.14, tipo: 'visita', status: 'atendida'},
     { hora: 14.45, tipo: 'visita', },
     { hora: 15.55, tipo: 'visita', },
     { hora: 17.25, tipo: 'visita', },
